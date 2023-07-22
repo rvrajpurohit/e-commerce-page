@@ -20,6 +20,23 @@ const Product = () => {
     fetchProduct().catch(console.error);
   }, [productId]);
 
+  // useEffect(() => {
+  //   const fetchProduct = async () => {
+  //     try {
+  //       setLoading(true);
+  //       const product = await FakeStoreApi.fetchProductById(productId);
+  //       setProduct(product);
+  //     } catch (error) {
+  //       console.error(error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+  
+  //   fetchProduct();
+  // }, [productId]);
+  
+
   if (!loading && !product) {
     return (
       <div className="container">

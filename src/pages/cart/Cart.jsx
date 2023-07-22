@@ -1,6 +1,6 @@
 import { useCart } from "../../context/cart";
 import { Link } from "react-router-dom";
-import './Cart.css'
+import "./Cart.css";
 
 const SHIPPING_CHARGES = 25;
 
@@ -15,9 +15,23 @@ const Cart = () => {
     );
   };
 
+  // const cartTotal = () => {
+  //   let total = 0;
+  //   cart.forEach((item) => {
+  //     total += item.product.price * item.quantity;
+  //   });
+  //   return total;
+  // };
+
+  
+  // const round = (value, decimals) => {
+  //   return Number(Math.round(value + "e" + decimals) + "e-" + decimals);
+  // };
+
   const round = (value, decimals) => {
-    return Number(Math.round(value + "e" + decimals) + "e-" + decimals);
+    return Number(value.toFixed(decimals));
   };
+
   return (
     <div className="cartWrapper">
       <div className="container">
@@ -43,28 +57,20 @@ const Cart = () => {
                       <span className="price">
                         ${round(item.product.price * item.quantity, 2)}
                       </span>
-                      {/* <div className="remove">Remove</div> */}
                     </div>
                     <div className="itemControl flex">
                       <div>
                         <button
-                          onClick={() => increaseQuantity(item.product.id)}
-                          className="addQty"
-                        >
-                          +
-                        </button>
-                        <span className="mx-1">{item.quantity}</span>
-                        <button
                           onClick={() => decreaseQuantity(item.product.id)}
                           disabled={item.quantity === 1}
-                          className="removeQty"
-                        >
-                          -
-                        </button>
+                          className="removeQty">-</button>
+                        <span className="mx-1">{item.quantity}</span>
+                        <button
+                          onClick={() => increaseQuantity(item.product.id)}
+                          className="addQty">+</button>
                         <div
                           className="remove my-1"
-                          onClick={() => removeFromCart(item.product.id)}
-                        >
+                          onClick={() => removeFromCart(item.product.id)}>
                           Remove
                         </div>
                       </div>
@@ -96,10 +102,11 @@ const Cart = () => {
         ) : (
           <div className="error">
             <span>
-            <p>&#9432; Cart is empty</p> <br />
-              <Link to="/" replace style={{ textDecoration: "none"}}>
-                        Go to homepage
-                    </Link></span>
+              <p>&#9432; Cart is empty</p> <br />
+              <Link to="/" replace style={{ textDecoration: "none" }}>
+                Go to homepage
+              </Link>
+            </span>
           </div>
         )}
       </div>

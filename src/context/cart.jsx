@@ -16,39 +16,69 @@ export const useCart = () => useContext(CartContext);
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState(initialState.cart);
 
-  const cartItemCount = () => {
-    return cart.reduce((acc, item) => acc + item.quantity, 0);
-  };
+  const cartItemCount = () => cart.reduce((acc, item) => acc + item.quantity, 0);
+
+
+  // const addToCart = (product) => {
+  //   const productIdx = cart.findIndex((item) => item.product.id === product.id);
+  //   if (productIdx !== -1) {
+  //     increaseQuantity(product.id);
+  //   } else {
+  //     setCart([...cart, { product, quantity: 1 }]);
+  //   }
+  // };
 
   const addToCart = (product) => {
-    const productIdx = cart.findIndex((item) => item.product.id === product.id);
-    if (productIdx !== -1) {
+    const existingProduct = cart.find((item) => item.product.id === product.id);
+  
+    if (existingProduct) {
       increaseQuantity(product.id);
     } else {
       setCart([...cart, { product, quantity: 1 }]);
     }
   };
+  
 
   const removeFromCart = (productId) => {
     setCart(cart.filter((item) => item.product.id !== productId));
   };
 
+  // const increaseQuantity = (productId) => {
+  //   const copy = cart.slice();
+  //   const productIdx = copy.findIndex((item) => item.product.id === productId);
+  //   if (productIdx !== -1) {
+  //     copy[productIdx].quantity += 1;
+  //     setCart(copy);
+  //   }
+  // };
+
   const increaseQuantity = (productId) => {
-    const copy = cart.slice();
-    const productIdx = copy.findIndex((item) => item.product.id === productId);
-    if (productIdx !== -1) {
-      copy[productIdx].quantity += 1;
-      setCart(copy);
-    }
+    setCart((prevCart) =>
+      prevCart.map((item) =>
+        item.product.id === productId
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
+      )
+    );
   };
 
+  // const decreaseQuantity = (productId) => {
+  //   const copy = cart.slice();
+  //   const productIdx = copy.findIndex((item) => item.product.id === productId);
+  //   if (productIdx !== -1 && copy[productIdx].quantity > 1) {
+  //     copy[productIdx].quantity -= 1;
+  //     setCart(copy);
+  //   }
+  // };
+
   const decreaseQuantity = (productId) => {
-    const copy = cart.slice();
-    const productIdx = copy.findIndex((item) => item.product.id === productId);
-    if (productIdx !== -1 && copy[productIdx].quantity > 1) {
-      copy[productIdx].quantity -= 1;
-      setCart(copy);
-    }
+    setCart((prevCart) =>
+      prevCart.map((item) =>
+        item.product.id === productId
+          ? { ...item, quantity: item.quantity - 1 }
+          : item
+      )
+    );
   };
 
   return (
